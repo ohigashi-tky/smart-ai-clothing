@@ -1,0 +1,38 @@
+# Python関連のキャッシュファイル
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 環境設定ファイルや仮想環境関連
+.env
+venv/
+.envrc
+*.env
+
+# エディタやOS関連の一時ファイル
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# PyInstaller
+# PyInstallerの結果はバイナリで、バージョン管理には不要です。
+/dist/
+/build/
+/*.spec
+
+# Jupyter Notebookのチェックポイント
+.ipynb_checkpoints/
+
+# ログファイル
+*.log
+
+# テストのカバレッジレポート
+htmlcov/
+.tox/
+.coverage
+.cache
+.nox/
+
+# ドキュメント生成関連
+/build/
