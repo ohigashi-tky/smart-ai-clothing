@@ -21,6 +21,9 @@ WINDOW_HEIGHT = int(os.getenv('WINDOW_HEIGHT'))
 UPDATE_INTERVAL = int(os.getenv('UPDATE_INTERVAL')) or 600
 AGE = int(os.getenv('AGE'))
 GENDER = os.getenv('GENDER')
+PREFERENCE=os.getenv('PREFERENCE')
+STYLE=os.getenv('STYLE')
+PHYSICAL=os.getenv('PHYSICAL')
 
 # OpenAIクライアントの初期化
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -77,11 +80,11 @@ def get_image_from_url(image_url):
     return image
 
 # ChatGPTから服装とアドバイスを取得
-def get_clothing_advice(preference, style, physical):
+def get_clothing_advice():
     print(f'get_clothing_advice START');
 
     prompt = f"""
-    私は{AGE}歳、{GENDER}です。{preference}が好きで、{style}スタイルを好みます。体質は{physical}です。
+    私は{AGE}歳、{GENDER}です。{PREFERENCE}が好きで、{STYLE}スタイルを好みます。体質は{PHYSICAL}です。
     現在の気温{temperature}°C、湿度{humidity}%。靴は単色、上下の服は2色以上。
     この条件に合う服装のアドバイスを100文字以内でお願いします
     """
@@ -124,10 +127,7 @@ def update_clothing():
     try:
         message_label.config(text="データ取得中...", fg="cyan")
         root.update()
-        preference = "カジュアル"
-        style = "ゆったりめ"
-        physical = "やや暑がり"
-        image, advice = get_clothing_advice(preference, style, physical)
+        image, advice = get_clothing_advice()
         if image is not None and advice is not None:
             image = image.resize((300, 300), Image.BILINEAR)    #中程度品質の圧縮、速度も速い
             image_tk = ImageTk.PhotoImage(image)
