@@ -18,7 +18,7 @@ DEVICE_ID = os.getenv('DEVICE_ID')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 WINDOW_WIDTH = int(os.getenv('WINDOW_WIDTH'))
 WINDOW_HEIGHT = int(os.getenv('WINDOW_HEIGHT'))
-UPDATE_INTERVAL = int(os.getenv('UPDATE_INTERVAL')) or 3600
+UPDATE_INTERVAL = int(os.getenv('UPDATE_INTERVAL')) or 600
 AGE = int(os.getenv('AGE'))
 GENDER = os.getenv('GENDER')
 
@@ -82,7 +82,8 @@ def get_clothing_advice(preference, style, physical):
 
     prompt = f"""
     私は{AGE}歳、{GENDER}です。{preference}が好きで、{style}スタイルを好みます。体質は{physical}です。
-    現在の気温{temperature}°C、湿度{humidity}%。この条件に合う服装のアドバイスを100文字以内でお願いします
+    現在の気温{temperature}°C、湿度{humidity}%。靴は単色、上下の服は2色以上。
+    この条件に合う服装のアドバイスを100文字以内でお願いします
     """
 
     response_advice = client.chat.completions.create(
@@ -99,8 +100,8 @@ def get_clothing_advice(preference, style, physical):
 
     prompt = f"""
     {advice}
-    ここより先に記載した文章に適合する服装の画像を生成してください。
-    年齢は{AGE}歳、性別は{GENDER}、1人の人物が服を着た実写風でカラーでお願いします。
+    アドバイスに沿った服装の画像を実写風カラーで生成してください。
+    1人の日本人{GENDER}、年齢は{AGE}歳です。
     テキスト情報は画像に出力しないでください
     """
 
@@ -125,7 +126,7 @@ def update_clothing():
         root.update()
         preference = "カジュアル"
         style = "ゆったりめ"
-        physical = "普通"
+        physical = "やや暑がり"
         image, advice = get_clothing_advice(preference, style, physical)
         if image is not None and advice is not None:
             image = image.resize((300, 300), Image.BILINEAR)    #中程度品質の圧縮、速度も速い
@@ -167,23 +168,24 @@ root.configure(bg="gray")
 message_label = tk.Label(root, text=".", font=("Helvetica", 16), bg="gray")
 message_label.place(x=WINDOW_WIDTH // 2,y=10, anchor="center")
 
-temperature_label = tk.Label(root, text="気温: 取得中...", font=("Helvetica", 20), fg="white", width=15)
+temperature_label = tk.Label(root, text="気温: 更新中...", font=("Helvetica", 20), fg="white", width=15)
 temperature_label.place(x=WINDOW_WIDTH // 2,y=50, anchor="center")
 
-humidity_label = tk.Label(root, text="湿度: 取得中...", font=("Helvetica", 20), fg="white", width=15)
+humidity_label = tk.Label(root, text="湿度: 更新中...", font=("Helvetica", 20), fg="white", width=15)
 humidity_label.place(x=WINDOW_WIDTH // 2,y=75, anchor="center")
 
-update_button = tk.Button(root, text="気温・温度を取得", command=update_temperature_humidity, font=("Helvetica", 16), width=12, height=2)
-update_button.place(x=WINDOW_WIDTH // 2,y=120, anchor="center")
+# 10分ごとに気温と湿度を取得するので不要
+# update_button = tk.Button(root, text="気温・温度を更新", command=update_temperature_humidity, font=("Helvetica", 16), width=12, height=2)
+# update_button.place(x=WINDOW_WIDTH // 2,y=120, anchor="center")
 
-update_clothing_button = tk.Button(root, text="服装を取得", command=update_clothing, font=("Helvetica", 16), width=12, height=2)
-update_clothing_button.place(x=WINDOW_WIDTH // 2,y=175, anchor="center")
+update_clothing_button = tk.Button(root, text="おすすめの服装", command=update_clothing, font=("Helvetica", 16), width=12, height=2)
+update_clothing_button.place(x=WINDOW_WIDTH // 2,y=130, anchor="center")
 
 image_label = tk.Label(root, bg="gray")
-image_label.place(x=WINDOW_WIDTH // 2, y=360, anchor="center")
+image_label.place(x=WINDOW_WIDTH // 2, y=320, anchor="center")
 
 advice_label = tk.Label(root, text="", font=("Helvetica", 16), fg="white", bg="gray", width=60, wraplength=550)
-advice_label.place(x=WINDOW_WIDTH // 2,y=550, anchor="center")
+advice_label.place(x=WINDOW_WIDTH // 2,y=510, anchor="center")
 
 # 初期化時に気温・温度を表示
 update_temperature_humidity()
