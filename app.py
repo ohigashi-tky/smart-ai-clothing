@@ -192,7 +192,8 @@ update_clothing_button = ctk.CTkButton(
     command=update_clothing,
     font=("Helvetica", 18),
     width=150,
-    height=40,corner_radius=5
+    height=40,
+    corner_radius=5
 )
 update_clothing_button.place(x=WINDOW_WIDTH // 2,y=125, anchor="center")
 

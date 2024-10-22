@@ -1,1 +1,0 @@
-source ../smart-ai-clothing-env/bin/activate
