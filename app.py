@@ -85,9 +85,9 @@ def get_clothing_advice():
     print(f'get_clothing_advice START');
 
     prompt = f"""
+    これから記載する条件に合う服装のアドバイスを100文字以内でお願いします。
     私は{AGE}歳、{GENDER}です。{PREFERENCE}が好きで、{STYLE}スタイルを好みます。体質は{PHYSICAL}です。
-    現在の気温{temperature}°C、湿度{humidity}%。靴は単色、上下の服は2色以上。
-    この条件に合う服装のアドバイスを100文字以内でお願いします
+    気温は{temperature}°C、湿度は{humidity}%。靴は単色、上下の服は2色以上。
     """
 
     response_advice = client.chat.completions.create(
