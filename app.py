@@ -1,5 +1,6 @@
 import requests
 import customtkinter as ctk
+import datetime
 from customtkinter import CTkImage
 import io
 import os
@@ -24,6 +25,10 @@ GENDER = os.getenv('GENDER')
 PREFERENCE=os.getenv('PREFERENCE')
 STYLE=os.getenv('STYLE')
 PHYSICAL=os.getenv('PHYSICAL')
+
+# 月を取得
+dt = datetime.datetime.now()
+MONTH=dt.month
 
 # OpenAIクライアントの初期化
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -87,7 +92,7 @@ def get_clothing_advice():
     prompt = f"""
     これから記載する条件に合う服装のアドバイスを100文字以内でお願いします。
     私は{AGE}歳、{GENDER}です。{PREFERENCE}が好きで、{STYLE}スタイルを好みます。体質は{PHYSICAL}です。
-    気温は{temperature}°C、湿度は{humidity}%。靴は単色、上下の服は2色以上。
+    気温は{temperature}°C、湿度は{humidity}%。{MONTH}月です。靴は単色、上下の服は2色以上。
     """
 
     response_advice = client.chat.completions.create(
